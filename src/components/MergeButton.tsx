@@ -1,8 +1,8 @@
-
 import React from 'react';
 import { PDFDocument } from 'pdf-lib';
-import { Download, Loader2, Merge } from 'lucide-react';
+import { Download, Loader2 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import {formatFileSize} from "@/lib/utils";
 
 interface UploadedFile {
   id: string;
@@ -14,18 +14,18 @@ interface UploadedFile {
 interface MergeButtonProps {
   files: UploadedFile[];
   isProcessing: boolean;
-  setIsProcessing: (processing: boolean) => void;
+  setIsProcessingAction: (processing: boolean) => void;
 }
 
 export const MergeButton: React.FC<MergeButtonProps> = ({
   files,
   isProcessing,
-  setIsProcessing
+  setIsProcessingAction
 }) => {
   const mergePDFs = async () => {
     if (files.length === 0) return;
     
-    setIsProcessing(true);
+    setIsProcessingAction(true);
     
     try {
       // Create a new PDF document
@@ -68,20 +68,12 @@ export const MergeButton: React.FC<MergeButtonProps> = ({
         variant: "destructive"
       });
     } finally {
-      setIsProcessing(false);
+      setIsProcessingAction(false);
     }
   };
 
   const getTotalSize = () => {
     return files.reduce((total, file) => total + file.size, 0);
-  };
-
-  const formatFileSize = (bytes: number): string => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
   return (

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -14,15 +13,15 @@ interface UploadedFile {
 interface SortableFileItemProps {
   file: UploadedFile;
   index: number;
-  onRemove: () => void;
-  formatFileSize: (bytes: number) => string;
+  onRemoveAction: () => void;
+  formatFileSizeAction: (bytes: number) => string;
 }
 
 export const SortableFileItem: React.FC<SortableFileItemProps> = ({
   file,
   index,
-  onRemove,
-  formatFileSize
+  onRemoveAction,
+  formatFileSizeAction
 }) => {
   const {
     attributes,
@@ -70,12 +69,12 @@ export const SortableFileItem: React.FC<SortableFileItemProps> = ({
           </p>
         </div>
         <p className="text-xs text-slate-500 mt-1">
-          {formatFileSize(file.size)}
+          {formatFileSizeAction(file.size)}
         </p>
       </div>
       
       <button
-        onClick={onRemove}
+        onClick={onRemoveAction}
         className="p-2 text-slate-400 hover:text-red-600 transition-colors"
       >
         <X className="w-4 h-4" />

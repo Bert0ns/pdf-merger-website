@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   DndContext, 
@@ -16,6 +15,7 @@ import {
   verticalListSortingStrategy 
 } from '@dnd-kit/sortable';
 import { SortableFileItem } from './SortableFileItem';
+import {formatFileSize} from "@/lib/utils";
 
 interface UploadedFile {
   id: string;
@@ -26,14 +26,14 @@ interface UploadedFile {
 
 interface FileListProps {
   files: UploadedFile[];
-  onFileRemove: (fileId: string) => void;
-  onFileReorder: (files: UploadedFile[]) => void;
+  onFileRemoveAction: (fileId: string) => void;
+  onFileReorderAction: (files: UploadedFile[]) => void;
 }
 
 export const FileList: React.FC<FileListProps> = ({ 
   files, 
-  onFileRemove, 
-  onFileReorder 
+  onFileRemoveAction,
+  onFileReorderAction
 }) => {
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -50,16 +50,8 @@ export const FileList: React.FC<FileListProps> = ({
       const newIndex = files.findIndex(file => file.id === over?.id);
       
       const newFiles = arrayMove(files, oldIndex, newIndex);
-      onFileReorder(newFiles);
+      onFileReorderAction(newFiles);
     }
-  };
-
-  const formatFileSize = (bytes: number): string => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
   return (
@@ -79,8 +71,8 @@ export const FileList: React.FC<FileListProps> = ({
               key={file.id}
               file={file}
               index={index}
-              onRemove={() => onFileRemove(file.id)}
-              formatFileSize={formatFileSize}
+              onRemoveAction={() => onFileRemoveAction(file.id)}
+              formatFileSizeAction={formatFileSize}
             />
           ))}
         </SortableContext>

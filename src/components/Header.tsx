@@ -1,6 +1,7 @@
+'use client';
 
 import React from 'react';
-import { FileText, Merge } from 'lucide-react';
+import { Merge } from 'lucide-react';
 
 export const Header = () => {
   return (

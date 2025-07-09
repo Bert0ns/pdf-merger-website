@@ -1,16 +1,17 @@
+'use client';
 
 import React, { useCallback, useState } from 'react';
 import { Upload, FileText, AlertCircle } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 interface FileUploadProps {
-  onFilesUpload: (files: File[]) => void;
+  onFilesUploadAction: (files: File[]) => void;
   maxFiles: number;
   currentCount: number;
 }
 
 export const FileUpload: React.FC<FileUploadProps> = ({ 
-  onFilesUpload, 
+  onFilesUploadAction,
   maxFiles, 
   currentCount 
 }) => {
@@ -52,16 +53,16 @@ export const FileUpload: React.FC<FileUploadProps> = ({
     const validFiles = validateFiles(files);
     
     if (validFiles.length > 0) {
-      onFilesUpload(validFiles);
+      onFilesUploadAction(validFiles);
     }
-  }, [onFilesUpload]);
+  }, [onFilesUploadAction]);
 
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     const validFiles = validateFiles(files);
     
     if (validFiles.length > 0) {
-      onFilesUpload(validFiles);
+      onFilesUploadAction(validFiles);
     }
     
     // Reset input
